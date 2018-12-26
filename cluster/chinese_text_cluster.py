@@ -4,6 +4,8 @@ import numpy as np
 import pymysql
 import random
 from numpy import *
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 
 def read_from_file(file_name):
     '''
@@ -93,7 +95,6 @@ def get_all_vector(file_path, stop_words_set):
     # 求每个词的idf值，是一个矩阵
     idf = np.log(column_sum)
     idf = np.diag(idf)
-    print(idf)
     # 请仔细想想，根绝IDF的定义，计算词的IDF并不依赖于某个文档，所以我们提前计算好。
     # 注意一下计算都是矩阵运算，不是单个变量的运算。
     for doc_v in docs_matrix:
@@ -157,6 +158,30 @@ def kMeans(dataSet, k, distMeas=gen_sim, createCent=randCent):
             centroids[cent,:] = mean(ptsInClust, axis=0) #assign centroid to mean
     return centroids, clusterAssment
 
+def km(X, posts):
+    '''
+    km算法：对转化成tf-idf值的矩阵进行训练
+    :param X: 训练数据
+    :param posts: 对应字段
+    :return: 预测接过
+    '''
+    kmeans = KMeans(n_clusters=4, random_state=0).fit(X)  # 分成n_clusters簇
+    y_kmeans = kmeans.predict(X)  # 预测值
+    centroids = kmeans.cluster_centers_  # 质心
+    j = 0
+    for i in y_kmeans:
+        print("类别：{} 字段：{}".format(i, posts[j]))
+        j+=1
+    # plt.scatter(X[:, 0], X[:, 1], s=50)
+    # plt.yticks(())
+    # plt.show()
+    #
+    # plt.scatter(X[:, 0], X[:, 1], c=y_kmeans, s=50, cmap='viridis')
+    # plt.scatter(centroids[:, 0], centroids[:, 1], c='black', s=200, alpha=0.5)
+    # plt.show()
+
+
+
 
 if __name__ == '__main__':
     stop_word_set = stop_words("E:\machineLearning\cluster\\text\stop_words.csv")
@@ -165,7 +190,9 @@ if __name__ == '__main__':
     # write_to_file("E:\machineLearning\cluster\\text\AMT_SRC_cut.csv", new_words)
     posts, tfidf = get_all_vector("E:\machineLearning\cluster\\text\AMT_SRC.csv", stop_word_set)
     # print(tfidf)
-    myCentroids, clustAssing = kMeans(tfidf, 3, gen_sim, randCent)
-    for label, name in zip(clustAssing[:, 0], posts):
-        print(label, name)
+    # myCentroids, clustAssing = kMeans(tfidf, 3, gen_sim, randCent)
+    # for label, name in zip(clustAssing[:, 0], posts):
+    #     print(label, name)
+
+    km(tfidf, posts)
 
