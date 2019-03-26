@@ -1,6 +1,5 @@
 import jieba
 import pandas as pd
-import sklearn
 import random
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
