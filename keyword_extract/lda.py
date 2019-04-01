@@ -34,9 +34,26 @@ corpus = [dictionary.doc2bow(sentence) for sentence in sentences]
 lda = gensim.models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=10)
 for topic in lda.print_topics(num_topics=10, num_words=8):
      print(topic[1])
+plt.rcParams["font.sans-serif"] = ["SimHei"]
+plt.rcParams["axes.unicode_minus"] = False
 
+num_show_term = 8
+num_topics = 10
+a = lda.get_topic_terms(topicid=1)
+print(a)
 
-
+for i, k in enumerate(range(num_topics)):
+    ax = plt.subplot(2, 5, i+1)
+    item_dis_all = lda.get_topic_terms(topicid=k)
+    item_dis = np.array(item_dis_all[: num_show_term])
+    ax.plot(range(num_show_term), item_dis[:, 1], "b*")
+    item_word_id = item_dis[:, 0].astype(np.int)
+    word = [dictionary.id2token[i] for i in item_word_id]
+    ax.set_ylabel("概率")
+    for j in range(num_show_term):
+        ax.text(j, item_dis[j, 1], word[j], bbox=dict(facecolor='green', alpha=0.1))
+plt.suptitle("xxxxx")
+plt.show()
 
 
 
