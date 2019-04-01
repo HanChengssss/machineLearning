@@ -7,10 +7,11 @@ from sklearn.model_selection import train_test_split
 
 stopwords = pd.read_csv("data/stopwords.txt", index_col=False, quoting=3, sep='\t', names=["stopword"], encoding='utf8')
 stopwords = stopwords["stopword"].values
-print(stopwords)
+# print(stopwords)
 
 # 加载语料提取分词
 laogong_df = pd.read_csv('data/beilaogongda.csv', encoding='utf-8', sep=',')
+
 # print(laogong_df)
 laopo_df = pd.read_csv("data/beilaopoda.csv", sep=',', encoding='utf8')
 erzi_df = pd.read_csv("data/beierzida.csv", sep=',', encoding='utf8')
@@ -21,13 +22,13 @@ laogong_df.dropna(inplace=True)
 laopo_df.dropna(inplace=True)
 erzi_df.dropna(inplace=True)
 nver_df.dropna(inplace=True)
-
+print(laogong_df)
 # 转换为list
 laogong = laogong_df.segment.values.tolist()
 laopo = laopo_df.segment.values.tolist()
 erzi = erzi_df.segment.values.tolist()
 nver = nver_df.segment.values.tolist()
-# print(laogong)
+print(laogong)
 
 # 分词和去停用词
 def preprocess_text(content_lines, sentences, category):
@@ -80,7 +81,7 @@ vec = CountVectorizer(
 # 把语料切分
 x, y = zip(*sentences)
 x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1256)
-print(x_test)
+# print(x_test)
 # print(y_test)
 
 # 把训练数据转化为词袋模型
@@ -91,7 +92,7 @@ vec.fit(x_train)
 from sklearn.naive_bayes import MultinomialNB
 classifier = MultinomialNB()
 classifier.fit(vec.transform(x_train), y_train)
-print(vec.transform(x_test))  # (0, 62)	1 第0个列表元素，**词典中索引为62的元素**， 词频
+# print(vec.transform(x_test))  # (0, 62)	1 第0个列表元素，**词典中索引为62的元素**， 词频
 # 测试评分
 score = classifier.score(vec.transform(x_test), y_test)
 # print(score)
