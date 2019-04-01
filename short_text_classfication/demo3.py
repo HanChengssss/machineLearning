@@ -29,8 +29,8 @@ sentences = []
 preprocess_text(content_lines, sentences)
 print(sentences)
 
-vec = joblib.load('vec.pkl')
-classifier = joblib.load('classifier.pkl')
+vec = joblib.load('model\\vec.pkl')
+classifier = joblib.load('model\\classifier.pkl')
 
 with open('data\zjly_result.csv', 'w', encoding='utf8', newline="") as f:
     fieldnames = ["text", "ret"]

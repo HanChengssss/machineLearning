@@ -86,6 +86,11 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1256)
 
 # 把训练数据转化为词袋模型
 vec.fit(x_train)
+feature_names = vec.get_feature_names()
+# an = vec.analyzer
+# print(feature_names)
+x = vec.fit_transform(x_train)
+print(x.toarray())
 
 # print(x_train)
 # 算法建模和模型训练
@@ -95,7 +100,7 @@ classifier.fit(vec.transform(x_train), y_train)
 # print(vec.transform(x_test))  # (0, 62)	1 第0个列表元素，**词典中索引为62的元素**， 词频
 # 测试评分
 score = classifier.score(vec.transform(x_test), y_test)
-# print(score)
+print(score)
 pre = classifier.predict(vec.transform(x_test))
 
 test_result = []
@@ -105,6 +110,6 @@ for i in range(len(x_test)):
     l = pre[i]
     test_result.append((j,k,l))
 # print(test_result)
-
-
+# 0.9952267303102625
+# 0.9928400954653938
 
