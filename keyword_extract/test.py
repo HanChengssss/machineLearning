@@ -37,20 +37,20 @@ num_topics = 5
 # 设置y轴标题
 # 设置标题
 # 展示
-
 for i, j in enumerate(range(num_topics)):
     ax = plt.subplot(2, 5, i+1)
-    topic_item = lda.get_topic_terms(topicid=j)
-    arry_topic = np.array(topic_item[: 4])
-    print(arry_topic)
-    ax.plot(range(num_show_term), arry_topic[:, 1], "b*")
-    all_term_id = arry_topic[:, 0].astype(np.int)
-    word_list = [dics.id2token[i] for i in all_term_id]
-    ax.set_ylabel("概率")
+    topics = lda.get_topic_terms(j)
+    topic_arry = np.array(topics[: num_show_term])
+    print(topic_arry)
+    ax.plot(range(num_show_term), topic_arry[:, 1], "b*")
+    term_ids = topic_arry[:, 0].astype(np.int)
+    words = [lda.id2word[i] for i in term_ids]
     for k in range(num_show_term):
-        ax.text(k, arry_topic[k,1], word_list[k], bbox=dict(facecolor="green", alpha=0.1))
-plt.suptitle("xxxxxxx")
+        ax.text(k, topic_arry[k, 1], words[k], bbox=dict(facecolor="green", alpha=0.1))
+plt.suptitle("xxxxxxxx")
 plt.show()
+
+
 
 
 
